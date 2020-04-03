@@ -37,7 +37,7 @@ class VinoController extends Controller
                     'demora'=>$request->demora,
                     'img'=>'default.jpg'
                 ]);
-                return back()->with('Listo','Se inserto correctamente');
+                return back()->with('Listo','Se inserto el dato correctamente');
             }
     }
 }
