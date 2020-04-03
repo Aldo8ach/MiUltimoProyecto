@@ -20,7 +20,7 @@
   @foreach($vinos as $vino)
   
 <div class="card m-2" style="width: 18rem;">
-  <img class="card-img-top" src="" alt="Card image cap">
+  <img class="card-img-top" src="..." alt="Card image cap">
   <div class="card-body">
     <h5 class="card-title">{{ $vino->nombre }}</h5>
     <p class="card-text">{{ $vino->descripcion }}</p>
