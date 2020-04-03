@@ -19,6 +19,11 @@ Route::get('/profile', function () {
     return "Estas en el perfl";
 });
 
+Route::group(['prefix' => 'usuarios', 'as'=>'usuarios'], function () {
+    
+});
+
+
 Route::group(['prefix' => 'admin','as'=>'admin'], function () {
     Route::get('/', 'AdminController@index');
     Route::get('/vinos', 'VinoController@index');
