@@ -30,4 +30,8 @@ Route::group(['prefix' => 'admin','as'=>'admin'], function () {
     Route::get('/usuarios', 'UserController@index');
     Route::resource('usuarios', 'UserController');
     Route::resource('vinos', 'VinoController');
+    Route::post('/usuarios/edit', 'UserController@editarUsuarios');
+    Route::post('/vinos/edit', 'VinoController@editarVinos');
+  
+    
 });

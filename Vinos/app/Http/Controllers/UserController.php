@@ -53,4 +53,38 @@ class UserController extends Controller
         $user->delete();
         return back()->with('Listo','El registro se eliminó correctamente');
     }
+
+
+    public function editarUsuarios(Request $request)
+    {
+        $user=User::find($request->id);
+        $validator=Validator::make($request->all(),[
+            'nombre'=>'required|min:3|max:40',
+            'email'=>'required|min:3|email',
+    
+            ]);
+            if($validator->fails()){
+                return back()
+                ->withInput()
+                ->with('ErrorInsert','Favor de llenar todos los campos')
+                ->withErrors($validator);
+            }else{
+                $user->name =$request->nombre;
+                $user->email =$request->email;
+                $validator2=Validator::make($request->all(),[
+                    
+                    'pass1'=>'required|min:3|required_with:pass2|same:pass2',
+                    'pass2'=>'required|min:3|'
+            
+                    ]);
+
+                    if(!$validator2->fails()){
+                        $user->password=Hash::make($request->pass1);
+                    }
+                $user->save();
+
+
+                return back()->with('Listo','El registro se actualizo correctamente');
+            }//llalve else
+    }
 }

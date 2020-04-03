@@ -33,6 +33,7 @@
   <div class="card-body">
     <td>
       <button class="btn btn-round btnEliminar" data-id="{{ $vino->id }} " data-toggle="modal" data-target="#modalEliminar"><i class="fa fa-trash"></i></button>
+      <button class="btn btn-round btnEditar" data-id="{{ $vino->id }}" data-catego="{{ $vino->categoria }}" data-name="{{ $vino->nombre }}" data-descripcion="{{ $vino->descripcion }}" data-demora="{{ $vino->demora }}" data-toggle="modal" data-target="#modalEditar"><i class="fa fa-edit"></i></button>
       <form action="{{ url('/admin/vinos', ['id'=>$vino->id ]) }}" method="POST" id="formEliminar_{{ $vino->id}}">
       @csrf
       <input type="hidden" name="id" value="{{ $vino->id }}">
@@ -77,16 +78,16 @@
 
     @endif
         <div class="form-group">
-          <input type="text" class="form-control" name="categoria" placeholder="Categoria">
+          <input type="text" class="form-control" name="categoria" placeholder="Categoria"  value="{{old('categoria')}}">
           </div>
           <div class="form-group">
-            <input type="text" class="form-control" name="nombre" placeholder="Nombre del vino">
+            <input type="text" class="form-control" name="nombre" placeholder="Nombre del vino" value="{{old('nombre')}}">
             </div>
             <div class="form-group">
-              <input type="text" class="form-control" name="descripcion" placeholder="Descripcion">
+              <input type="text" class="form-control" name="descripcion" placeholder="Descripcion" value="{{old('descripcion')}}">
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" name="demora" placeholder="Tiempo de elavoracion">
+                <input type="text" class="form-control" name="demora" placeholder="Tiempo de elavoracion" value="{{old('demora')}}">
                 </div>
 
           
@@ -95,6 +96,7 @@
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
         <button type="submit" class="btn btn-primary">Guardar</button>
       </div>
+      </form>
     </div>
   </div>
 </div>
@@ -125,7 +127,54 @@
   </div>
 </div>
 
+<!-- Modal Editar -->
+<div class="modal fade" id="modalEditar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Editar un vino</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="/admin/vinos/edit" method="post">
+        @csrf
+      <div class="modal-body">
+        @if($message=Session::get('ErrorInsert'))
+        <div class="col-12 alert alert-danger alert-dismissable fade show" role="alert">
+          
+          <h5>Errores:</h5>
+          <ul>
+          @foreach ($errors->all() as $error)
+          <li>{{ $error }}</li>
+          @endforeach
+        </ul>
+        </div>
 
+    @endif
+    <input type="hidden" name="id" id="idEdit">
+        <div class="form-group">
+          <input type="text" class="form-control" name="categoria" placeholder="Categoria"  value="{{old('categoria')}}" id="categoriaEdit">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" name="nombre" placeholder="Nombre del vino" value="{{old('nombre')}}" id="nameEdit">
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" name="descripcion" placeholder="Descripcion" value="{{old('descripcion')}}" id="descripcionEdit">
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" name="demora" placeholder="Tiempo de elavoracion" value="{{old('demora')}}" id="demoraEdit">
+                </div>
+
+          
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 
 
@@ -149,8 +198,16 @@
          
         });
 
-      
+        $(".btnEditar").click(function(){
+          $("#idEdit").val($(this).data('id'));
+          $("#categoriaEdit").val($(this).data('catego'));
+          $("#nameEdit").val($(this).data('name'));
+          $("#descripcionEdit").val($(this).data('descripcion'));
+          $("#demoraEdit").val($(this).data('demora'));
+         
+        });
 
       });
     </script>
 @endsection
+

@@ -34,6 +34,7 @@
             <td>{{ $usuario->nivel }}</td>
             <td>
               <button class="btn btn-round btnEliminar" data-id="{{ $usuario->id }} " data-toggle="modal" data-target="#modalEliminar"><i class="fa fa-trash"></i></button>
+              <button class="btn btn-round btnEditar" data-id="{{ $usuario->id }}" data-name="{{ $usuario->name }}" data-email="{{ $usuario->email }}" data-toggle="modal" data-target="#modalEditar"><i class="fa fa-edit"></i></button>
               <form action="{{ url('/admin/usuarios', ['id'=>$usuario->id ]) }}" method="POST" id="formEliminar_{{ $usuario->id}}">
               @csrf
               <input type="hidden" name="id" value="{{ $usuario->id }}">
@@ -120,6 +121,55 @@
 </div>
 
 
+<!-- Modal Editar -->
+<div class="modal fade" id="modalEditar" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Editar Usuario</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="/admin/usuarios/edit" method="post">
+        @csrf
+      <div class="modal-body">
+        @if($message=Session::get('ErrorInsert'))
+        <div class="col-12 alert alert-danger alert-dismissable fade show" role="alert">
+          
+          <h5>Errores:</h5>
+          <ul>
+          @foreach ($errors->all() as $error)
+          <li>{{ $error }}</li>
+          @endforeach
+        </ul>
+        </div>
+
+    @endif
+    <input type="hidden" name="id" id="idEdit">
+        <div class="form-group">
+        <input type="text" class="form-control" name="nombre" placeholder="Nombre" value="{{old('nombre')}}" id="nameEdit">
+        </div>
+        <div class="form-group">
+        <input type="email" class="form-control" name="email" placeholder="Email" value="{{old('email')}}" id="emailEdit">
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-control" name="pass1" placeholder="Contraseña">
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-control" name="pass2" placeholder="Confirmar Contraseña">
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
 
 @endsection
 
@@ -139,6 +189,13 @@
 
         $(".btnModalEliminar").click(function(){
           $("#formEliminar_"+idEliminar).submit();
+         
+        });
+
+        $(".btnEditar").click(function(){
+          $("#idEdit").val($(this).data('id'));
+          $("#nameEdit").val($(this).data('name'));
+          $("#emailEdit").val($(this).data('email'));
          
         });
 

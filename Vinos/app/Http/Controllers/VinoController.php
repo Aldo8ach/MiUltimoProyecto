@@ -50,11 +50,41 @@ class VinoController extends Controller
     {
         $vino=Vino::find($id);
         if($vino->img != 'default.jpg'){
-            if(files_exists(public_path('users/'.$vino->img))){
-                unlink(public_path('users/'.$vino->img));
+            if(files_exists(public_path('vinos/'.$vino->img))){
+                unlink(public_path('vinos/'.$vino->img));
             }
         }
         $vino->delete();
         return back()->with('Listo','El registro se eliminó correctamente');
     }
+
+    public function editarVinos(Request $request)
+    {
+        $vino=Vino::find($request->id);
+        $validator=Validator::make($request->all(),[
+            'categoria'=>'required|min:3|max:50',
+            'nombre'=>'required|min:3|max:50',
+            'descripcion'=>'required|min:3|max:110',
+            'demora'=>'required|min:3|max:200'
+           
+    
+            ]);
+            if($validator->fails()){
+                return back()
+                ->withInput()
+                ->with('ErrorInsert','Favor de llenar todos los campos')
+                ->withErrors($validator);
+            }else{
+                $vino->categoria =$request->categoria;
+                $vino->nombre =$request->nombre;
+                $vino->descripcion =$request->descripcion;
+                $vino->demora =$request->demora;
+                
+                $vino->save();
+
+
+                return back()->with('Listo','El registro se actualizo correctamente');
+            }//llalve else
+    }
+    
 }
