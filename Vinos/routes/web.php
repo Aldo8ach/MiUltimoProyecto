@@ -14,3 +14,15 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/profile', function () {
+    return "Estas en el perfl";
+});
+
+Route::group(['prefix' => 'admin','as'=>'admin'], function () {
+    Route::get('/', 'AdminController@index');
+    Route::get('/vinos', 'VinoController@index');
+    Route::get('/usuarios', 'UserController@index');
+    Route::resource('usuarios', 'UserController');
+    Route::resource('vinos', 'VinoController');
+});
