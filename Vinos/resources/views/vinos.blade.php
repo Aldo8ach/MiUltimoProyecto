@@ -15,38 +15,37 @@
   </div>
 
 @endif
-<table class="table col-12">
-  <thead>
-    <tr>
-      <td>Id</td>
-      <td>Nombre</td>
-      <td>Email</td>
-      <td>Nivel</td>
-      <td>&nbsp;</td>
-    </tr>
-  </thead>
-  <tbody>
-    @foreach($vinos as $vino)
-    <tr>
-     
-        <td>{{ $vino->id }}</td>
-        <td>{{ $vino->categoria }}</td>
-        <td>{{ $vino->nombre }}</td>
-        <td>{{ $vino->descripcion }}</td>
-        <td>{{ $vino->demora }}</td>
-        <td>
-          <button class="btn btn-round btnEliminar" data-id="{{ $vino->id }} " data-toggle="modal" data-target="#modalEliminar"><i class="fa fa-trash"></i></button>
-          <form action="{{ url('/admin/vinos', ['id'=>$vino->id ]) }}" method="POST" id="formEliminar_{{ $vino->id}}">
-          @csrf
-          <input type="hidden" name="id" value="{{ $vino->id }}">
-          <input type="hidden" name="_method" value="delete">
-          </form>
-        </td>
-     
-    </tr>
-    @endforeach
-  </tbody>
-</table>
+
+
+  @foreach($vinos as $vino)
+  
+<div class="card m-2" style="width: 18rem;">
+  <img class="card-img-top" src="..." alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">{{ $vino->nombre }}</h5>
+    <p class="card-text">{{ $vino->descripcion }}</p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">{{ $vino->categoria }}</li>
+    <li class="list-group-item">{{ $vino->demora }}</li>
+    
+  </ul>
+  <div class="card-body">
+    <td>
+      <button class="btn btn-round btnEliminar" data-id="{{ $vino->id }} " data-toggle="modal" data-target="#modalEliminar"><i class="fa fa-trash"></i></button>
+      <form action="{{ url('/admin/vinos', ['id'=>$vino->id ]) }}" method="POST" id="formEliminar_{{ $vino->id}}">
+      @csrf
+      <input type="hidden" name="id" value="{{ $vino->id }}">
+      <input type="hidden" name="_method" value="delete">
+      </form>
+    </td>
+  </div>
+</div>
+@endforeach
+
+
+
+
 
 
 
