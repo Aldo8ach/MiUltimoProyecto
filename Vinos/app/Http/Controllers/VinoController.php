@@ -11,7 +11,12 @@ class VinoController extends Controller
 {
     public function index(){
         
-        return view('vinos');
+        $vinos =\DB::table('vinos')
+                ->select('vinos.*')
+                ->orderBy('id')
+                ->get();
+
+        return view('vinos')->with('vinos',$vinos);
     }
 
 
@@ -39,5 +44,17 @@ class VinoController extends Controller
                 ]);
                 return back()->with('Listo','Se inserto el dato correctamente');
             }
+    }
+
+    public function destroy($id)
+    {
+        $vino=Vino::find($id);
+        if($vino->img != 'default.jpg'){
+            if(files_exists(public_path('users/'.$vino->img))){
+                unlink(public_path('users/'.$vino->img));
+            }
+        }
+        $vino->delete();
+        return back()->with('Listo','El registro se eliminó correctamente');
     }
 }

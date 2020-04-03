@@ -15,6 +15,41 @@
   </div>
 
 @endif
+<table class="table col-12">
+  <thead>
+    <tr>
+      <td>Id</td>
+      <td>Nombre</td>
+      <td>Email</td>
+      <td>Nivel</td>
+      <td>&nbsp;</td>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach($vinos as $vino)
+    <tr>
+     
+        <td>{{ $vino->id }}</td>
+        <td>{{ $vino->categoria }}</td>
+        <td>{{ $vino->nombre }}</td>
+        <td>{{ $vino->descripcion }}</td>
+        <td>{{ $vino->demora }}</td>
+        <td>
+          <button class="btn btn-round btnEliminar" data-id="{{ $vino->id }} " data-toggle="modal" data-target="#modalEliminar"><i class="fa fa-trash"></i></button>
+          <form action="{{ url('/admin/vinos', ['id'=>$vino->id ]) }}" method="POST" id="formEliminar_{{ $vino->id}}">
+          @csrf
+          <input type="hidden" name="id" value="{{ $vino->id }}">
+          <input type="hidden" name="_method" value="delete">
+          </form>
+        </td>
+     
+    </tr>
+    @endforeach
+  </tbody>
+</table>
+
+
+
 </div>
 
 <!-- Modal -->
@@ -65,6 +100,33 @@
   </div>
 </div>
 
+
+
+<!-- Modal Eliminar -->
+<div class="modal fade" id="modalEliminar" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Eliminar Vino</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+     
+      <div class="modal-body">
+       <h5>¿Desea eliminar el Vino?</h5>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger btnModalEliminar">Eliminar</button>
+      </div>
+    
+    </div>
+  </div>
+</div>
+
+
 @endsection
 
 
@@ -76,6 +138,17 @@
         $("#modalAgregar").modal('show');
         
         @endif
+
+
+        $(".btnEliminar").click(function(){
+          idEliminar=$(this).data('id');
+         
+        });
+
+        $(".btnModalEliminar").click(function(){
+          $("#formEliminar_"+idEliminar).submit();
+         
+        });
 
       
 
