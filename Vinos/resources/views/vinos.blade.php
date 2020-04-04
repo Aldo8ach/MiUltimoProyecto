@@ -20,14 +20,14 @@
   @foreach($vinos as $vino)
   
 <div class="card m-2" style="width: 18rem;">
-  <img class="card-img-top" src="" alt="Card image cap">
+<img class="card-img-top" src="{{ asset('/img/vinos/'.$vino->img)}}" style ="height:250px" alt="Card image cap">
   <div class="card-body">
-    <h5 class="card-title">{{ $vino->nombre }}</h5>
-    <p class="card-text">{{ $vino->descripcion }}</p>
+    <h5 class="card-title">Nombre: {{ $vino->nombre }}</h5>
+    <p class="card-text">Descripcion: {{ $vino->descripcion }}</p>
   </div>
   <ul class="list-group list-group-flush">
-    <li class="list-group-item">{{ $vino->categoria }}</li>
-    <li class="list-group-item">{{ $vino->demora }}</li>
+    <li class="list-group-item">Categoria: {{ $vino->categoria }}</li>
+    <li class="list-group-item">Tiempo de elavoración: {{ $vino->demora }}</li>
     
   </ul>
   <div class="card-body">
@@ -62,7 +62,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="/admin/vinos" method="post">
+      <form action="/admin/vinos" method="post" enctype="multipart/form-data">
         @csrf
       <div class="modal-body">
         @if($message=Session::get('ErrorInsert'))
@@ -89,6 +89,9 @@
               <div class="form-group">
                 <input type="text" class="form-control" name="demora" placeholder="Tiempo de elavoracion" value="{{old('demora')}}">
                 </div>
+                <div class="form-group">
+                  <input type="file" class="form-control" name="imagen" placeholder="Imagen" >
+                  </div>
 
           
       </div>
@@ -165,6 +168,7 @@
               <div class="form-group">
                 <input type="text" class="form-control" name="demora" placeholder="Tiempo de elavoracion" value="{{old('demora')}}" id="demoraEdit">
                 </div>
+                
 
           
       </div>

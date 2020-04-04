@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 use App\Vino;
-use Hash;
+
 
 class VinoController extends Controller
 {
@@ -25,7 +25,8 @@ class VinoController extends Controller
             'categoria'=>'required|min:3|max:50',
             'nombre'=>'required|min:3|max:50',
             'descripcion'=>'required|min:3|max:110',
-            'demora'=>'required|min:3|max:200'
+            'demora'=>'required|min:1|max:200',
+            'imagen'=> 'required|image|mimes:jpg,jpeg,png,gif,svg|max:2048'
            
     
             ]);
@@ -35,13 +36,18 @@ class VinoController extends Controller
                 ->with('ErrorInsert','Favor de llenar todos los campos')
                 ->withErrors($validator);
             }else{
+                $imagen =$request-> file('imagen');
+                $nombre=time().'.'.$imagen->getClientOriginalExtension();
+                $destino = public_path('img/vinos');
+                $request->imagen->move($destino, $nombre);
                 $vino=Vino::create([
                     'categoria'=>$request->categoria,
                     'nombre'=>$request->nombre,
                     'descripcion'=>$request->descripcion,
                     'demora'=>$request->demora,
-                    'img'=>'default.jpg'
+                    'img'=>$nombre
                 ]);
+                $vino->save();
                 return back()->with('Listo','Se inserto el dato correctamente');
             }
     }
