@@ -38,6 +38,7 @@ class UserController extends Controller
                 'img'=>'default.jpg',
                 'nivel'=>'usuario'
             ]);
+            $user->save();
             return back()->with('Listo','Se ha insertado correctamente');
         }
         
@@ -46,8 +47,8 @@ class UserController extends Controller
     {
         $user=User::find($id);
         if($user->img != 'default.jpg'){
-            if(files_exists(public_path('users/'.$user->img))){
-                unlink(public_path('users/'.$user->img));
+            if(file_exists(public_path('img/users/'.$user->img))){
+                unlink(public_path('img/users/'.$user->img));
             }
         }
         $user->delete();

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 use App\Vino;
-
+use Hash;
 
 class VinoController extends Controller
 {
@@ -52,17 +52,18 @@ class VinoController extends Controller
             }
     }
 
-    public function destroy($id)
-    {
+    public function destroy($id) {
         $vino=Vino::find($id);
         if($vino->img != 'default.jpg'){
-            if(files_exists(public_path('vinos/'.$vino->img))){
-                unlink(public_path('vinos/'.$vino->img));
+            if(file_exists(public_path('img/vinos/'.$vino->img))){
+                unlink(public_path('img/vinos/'.$vino->img));
             }
         }
         $vino->delete();
         return back()->with('Listo','El registro se eliminó correctamente');
     }
+
+ 
 
     public function editarVinos(Request $request)
     {
@@ -92,5 +93,8 @@ class VinoController extends Controller
                 return back()->with('Listo','El registro se actualizo correctamente');
             }//llalve else
     }
+
+
+    
     
 }
